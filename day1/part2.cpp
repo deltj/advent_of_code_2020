@@ -1,5 +1,5 @@
 /**
- * Given an list of numbers, find three that add up to 2020 and multiply them
+ * Given a list of numbers, find three that add up to 2020 and multiply them
  */
 #include <cstdlib>
 #include <fstream>
@@ -50,8 +50,7 @@ int main(int argc, char *argv[])
                 c = numbers[k];
                 if(a + b + c == 2020)
                 {
-                    std::cout << "a=" << a << ",b=" << b << ",c=" << c
-                            << "product=" << a * b * c<< std::endl;
+                    std::cout << "a=" << a << ",b=" << b << ",c=" << c << "product=" << a * b * c << std::endl;
                 }
             }
         } 

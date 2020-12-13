@@ -1,5 +1,5 @@
 /**
- * Given an list of numbers, find two that add up to 2020 and multiply them
+ * Given a list of numbers, find two that add up to 2020 and multiply them
  */
 #include <cstdlib>
 #include <fstream>
@@ -47,8 +47,7 @@ int main(int argc, char *argv[])
 
             if(a + b == 2020)
             {
-                std::cout << "a=" << a << ",b=" << b << ",product="
-                        << a * b << std::endl;
+                std::cout << "a=" << a << ",b=" << b << ",product=" << a * b << std::endl;
             }
         } 
     }
