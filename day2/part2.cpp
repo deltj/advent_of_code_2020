@@ -9,7 +9,7 @@
 #include <sstream>
 
 #include <boost/algorithm/string.hpp>
-#include <boost/regex.hpp>
+#include <boost/lexical_cast.hpp>
 
 void usage()
 {
@@ -48,48 +48,33 @@ int main(int argc, char *argv[])
 
         if(tokens.size() != 3) continue;
 
-        std::string bounds = tokens[0];
+        std::string indices = tokens[0];
         std::string letter = tokens[1];
         std::string password = tokens[2];
 
         boost::replace_all(letter, ":", "");
 
-        //std::cout << "bounds: " << bounds << std::endl;
+        //std::cout << "indices: " << indices << std::endl;
         //std::cout << "letter: " << letter << std::endl;
         //std::cout << "password: " << password << std::endl;
 
-        splitvec boundsTokens;
-        boost::split(boundsTokens, bounds, boost::is_any_of("-"));
+        splitvec indexTokens;
+        boost::split(indexTokens, indices, boost::is_any_of("-"));
 
-        if(boundsTokens.size() != 2) continue;
+        if(indexTokens.size() != 2) continue;
 
-        std::stringstream ss;
-        ss << letter << "{" << boundsTokens[0] << "," << boundsTokens[1] << "}";
+        int index1, index2;
+        std::istringstream tok1ss(indexTokens[0]);
+        std::istringstream tok2ss(indexTokens[1]);
+        tok1ss >> index1;
+        tok2ss >> index2;
 
-        std::cout << "regex: " << ss.str() << std::endl;
-
-        boost::regex e(ss.str());
-
-        for(int i=97; i<123; ++i)
+        char c = letter[0];
+        bool found1 = (password.at(index1 - 1) == c);
+        bool found2 = (password.at(index2 - 1) == c);
+        if((found1 && !found2) || (found2 && !found1))
         {
-            std::stringstream css;
-            css << (char)i;
-            std::string c = css.str();
-            if(letter.compare(c) != 0)
-            {
-                boost::erase_all(password, c);
-            }
-        }
-        std::cout << password << std::endl;
-
-        if(boost::regex_match(password, e))
-        {
-            std::cout << "pass" << std::endl;
             validCounter++;
-        }
-        else
-        {
-            std::cout << "fail" << std::endl;
         }
     }
 
