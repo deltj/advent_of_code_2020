@@ -1,10 +1,11 @@
 /**
- * Decode binary space partitioning airline seating assignments
+ * Decode binary space partitioning airline seating assignments, 
+ * and find your seat
  */
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <vector>
+#include <set>
 #include <sstream>
 
 #include <boost/algorithm/string.hpp>
@@ -64,40 +65,33 @@ int main(int argc, char *argv[])
 
     int row, col;
 
-    //  test data
-    /*
-    decode("FBFBBFFRLR", row, col);
-    std::cout << "row: " << row << std::endl;
-    std::cout << "col: " << col << std::endl;
-
-    decode("BFFFBBFRRR", row, col);
-    std::cout << "row: " << row << std::endl;
-    std::cout << "col: " << col << std::endl;
-
-    decode("FFFBBBFRRR", row, col);
-    std::cout << "row: " << row << std::endl;
-    std::cout << "col: " << col << std::endl;
-
-    decode("BBFFBBFRLL", row, col);
-    std::cout << "row: " << row << std::endl;
-    std::cout << "col: " << col << std::endl;
-    */
-
-    int maxSeatId = 0;
+    struct seat
+    {
+        int row;
+        int col;
+        int id;
+    };
+    std::set<int> ids;
 
     std::ifstream ifs(argv[1], std::ifstream::in);
     std::string line;
     while(std::getline(ifs, line))
     {
         decode(line, row, col);
-        int seatId = row * 8 + col;
-        if(seatId > maxSeatId)
-        {
-            maxSeatId = seatId;
-        }
+        int id = row * 8 + col;
+        ids.insert(id);
     }
 
-    std::cout << "max seat id: " << maxSeatId << std::endl;
+    int lastId = *(ids.begin()) - 1;
+    for(std::set<int>::const_iterator it=ids.begin(); it!=ids.end(); ++it)
+    {
+        //std::cout << *it << std::endl;
+        if(*it != lastId + 1) 
+        {
+            std::cout << "missing id might be: " << lastId + 1 << std::endl;
+        }
+        lastId = *it;
+    }
 
     ifs.close();
 }
